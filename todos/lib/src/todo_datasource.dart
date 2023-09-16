@@ -1,7 +1,7 @@
 import 'package:todos_data/todos_data.dart';
 import 'package:uuid/uuid.dart';
 
-abstract interface class TodoDataSource {
+abstract interface class TodosDataSource {
   Future<Todo> create(Todo todo);
 
   Future<List<Todo>> readAll();
@@ -10,10 +10,10 @@ abstract interface class TodoDataSource {
 
   Future<Todo> update(String id, Todo todo);
 
-  void delete(String id);
+  Future<void> delete(String id);
 }
 
-class MemmoryDataSource implements TodoDataSource {
+class MemmoryTodosDataSource implements TodosDataSource {
   final _cache = <String, Todo>{};
 
   @override
@@ -40,5 +40,5 @@ class MemmoryDataSource implements TodoDataSource {
   }
 
   @override
-  void delete(String id) => _cache.remove(id);
+  Future<void> delete(String id) async => _cache.remove(id);
 }
