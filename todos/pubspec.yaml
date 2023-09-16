@@ -8,6 +8,9 @@ environment:
 
 dependencies:
   dart_frog: ^1.0.0
+  todos_data:
+    path: ../todos_data
+  uuid: ^4.0.0
 
 dev_dependencies:
   mocktail: ^1.0.0
