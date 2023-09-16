@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/cubit/todo_cubit.dart';
-import 'package:todo/models/todo.dart';
+import 'package:todos_data/todos_data.dart';
+
 
 void main() {
   runApp(const MainApp());
@@ -55,8 +56,8 @@ class _TodoViewState extends State<TodoView> {
             .map(
               (element) => Row(
                 children: [
-                  Text(element.task),
-                  if (element.isNotDone)
+                  Text(element.title),
+                  if (!element.isCompleted)
                     IconButton(
                       onPressed: () => _done(element),
                       icon: const Icon(Icons.done),
@@ -114,7 +115,7 @@ class _TodoListScreenState extends State<TodoListScreen> {
           child: ListView.separated(
             itemBuilder: (context, index) {
               return ListTile(
-                title: Text(todoCubit.state.todos.toList()[index].task),
+                title: Text(todoCubit.state.todos.toList()[index].title),
               );
             },
             separatorBuilder: (_, __) => const Divider(),

@@ -1,11 +1,23 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:todo/models/todo.dart';
+import 'package:todo/api_client/todo_api_client.dart';
+import 'package:todos_data/todos_data.dart';
 
 part 'todo_state.dart';
 
 class TodoCubit extends Cubit<TodoState> {
-  TodoCubit() : super(TodoInitial());
+  TodoCubit() : super(TodoInitial()) {
+    _getInitialTodos();
+  }
+
+  late final apiClient = TodoAPIClient();
+
+  void _getInitialTodos() async {
+    final todos = await apiClient.readAll();
+    emit(
+      Todos(todos.toSet()),
+    );
+  }
 
   @override
   void onChange(Change<TodoState> change) {
@@ -14,18 +26,30 @@ class TodoCubit extends Cubit<TodoState> {
   }
 
   void addTodo(String task) {
-    _addTodo(Todo(task, false));
+    _addTodo(
+      Todo(
+        title: task,
+        description: task,
+        isCompleted: false,
+      ),
+    );
   }
 
-  void _addTodo(Todo task) {
+  void _addTodo(Todo task) async {
+    task = await apiClient.create(task);
     state.todos.add(task);
     emit(Todos(state.todos));
   }
 
-  void done(Todo task) {
+  void done(Todo task) async {
+
     final doneTask = state.todos
         .firstWhere((element) => element == task)
-        .copyWith(done: true);
+        .copyWith(isCompleted: true);
+
+
+    await apiClient.update(doneTask.id!, doneTask);
+
 
     print('Starting');
     print(state.todos.length);
@@ -39,7 +63,6 @@ class TodoCubit extends Cubit<TodoState> {
   }
 
   void unfinished(Todo task) {
-    /// Rever the task so its not done.
-    UnimplementedError('Not implemented');
+
   }
 }

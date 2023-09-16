@@ -9,8 +9,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
   flutter_bloc: 8.1.3
+  http: ^1.1.0
+  todos_data:
+    path: ../todos_data
 
 dev_dependencies:
   flutter_test:
