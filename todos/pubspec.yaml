@@ -8,6 +8,7 @@ environment:
 
 dependencies:
   dart_frog: ^1.0.0
+  shelf_cors_headers: ^0.1.5
   todos_data:
     path: ../todos_data
   uuid: ^4.0.0
